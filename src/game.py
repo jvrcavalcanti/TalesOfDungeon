@@ -3,13 +3,14 @@ from colors import Colors
 from config import Config
 from player import Player
 from enemy import Enemy
+from background import Background
 
 
 class Game:
     def __init__(self, width = 1365, height = 730):
         self.screen = pg.display.set_mode(
             (Config.SCREEN_WIDTH.value, Config.SCREEN_HEIGHT.value),
-            pg.RESIZABLE
+            pg.FULLSCREEN
         )
         self.clock: pg.time.Clock = pg.time.Clock()
         self.running = True
@@ -20,6 +21,7 @@ class Game:
         self.dt = 0
         self.bullets = []
         self.enemys = []
+        self.back = Background()
         
         self.sprites.add(self.player)
         pg.display.set_caption("Tales of Dungeon")
@@ -41,6 +43,7 @@ class Game:
 
     def run(self):
         time = 0
+        time_spawn = 1
         while self.running:
             self.dt = self.clock.tick(self.fps)
             self.text_points = pg.font.Font(None, 30).render(
@@ -63,14 +66,16 @@ class Game:
             if self.player.life == 0:
                 self.running = False
 
-            if time == 50:
+            if time >= 50:
+                time_spawn += 0.1
                 time = 0
                 self.add_enemy()
             
             self.sprites.update()
             self.screen.fill(Colors.BLACK.value)
+            self.screen.blit(self.back.image, self.back.rect)
             self.screen.blit(self.text_points, (0, 0))
             self.screen.blit(self.text_lifes, (150, 0))
             self.sprites.draw(self.screen)
             pg.display.flip()
-            time += 1
+            time += time_spawn

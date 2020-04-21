@@ -62,8 +62,9 @@ class Player(pg.sprite.Sprite):
             self.move(1, 0)
         if key[pg.K_a]:
             self.move(-1, 0)
-        if key[pg.K_SPACE]:
-            self.attack()
+        if key[pg.K_q]:
+            self.game.running = False
+        
 
     def move(self, x, y):
         new_x = self.rect.x + (x * self.velocity)

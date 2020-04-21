@@ -1,6 +1,8 @@
 import pygame as pg
 from util import load_image
+from config import Config
 import math
+import random
 
 
 class Enemy(pg.sprite.Sprite):
@@ -9,7 +11,10 @@ class Enemy(pg.sprite.Sprite):
         self.game = game
         pg.sprite.Sprite.__init__(self)
         self.image = pg.image.load(load_image("enemy30x50.gif"))
-        self.rect = self.image.get_rect(center=(500, 500))
+        self.rect = self.image.get_rect(center=(
+            random.randint(50, Config.SCREEN_WIDTH.value - 60),
+            random.randint(50, Config.SCREEN_HEIGHT.value - 120)
+        ))
         self.direction = player.direction
         self.direction[0] = -self.direction[0]
         self.pos = pg.Vector2(self.rect.center)
